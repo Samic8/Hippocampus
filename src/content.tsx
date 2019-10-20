@@ -8,10 +8,6 @@ function Content() {
   const [ticked, setTicked] = React.useState(0);
   const [websiteName, setWebsiteName] = React.useState(0);
 
-  if (!location.href.includes(name)) {
-    return null;
-  }
-
   React.useEffect(() => {
     window.chrome.storage.sync.get("websites", function({ websites }) {
       websites.forEach(({ name, count }) => {
@@ -67,6 +63,10 @@ function Content() {
     var monthIndex = newDate.getMonth();
     var year = newDate.getFullYear();
     return `${day}${monthIndex}${year}`;
+  }
+
+  if (!location.href.includes(websiteName)) {
+    return null;
   }
 
   return (
