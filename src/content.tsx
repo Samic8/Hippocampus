@@ -80,7 +80,8 @@ function Content() {
           bottom: "0px",
           padding: "16px",
           borderTopLeftRadius: "6px",
-          backgroundColor: "rgba(90, 90, 90, 0.1)"
+          backgroundColor: "rgba(90, 90, 90, 0.1)",
+          zIndex: 10
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
