@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 function App() {
-  const [websites, setWebsites] = useState([]);
-  const [newWebsite, setNewWebsite] = useState({
+  const [websites, setWebsites] = React.useState([]);
+  const [newWebsite, setNewWebsite] = React.useState({
     name: "",
     count: 1
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     window.chrome.storage.sync.get("websites", function({
       websites: storedWebsites
     }) {
@@ -67,7 +67,10 @@ function App() {
                 <input
                   value={newWebsite.count}
                   onChange={e =>
-                    setNewWebsite({ ...newWebsite, count: e.target.value })
+                    setNewWebsite({
+                      ...newWebsite,
+                      count: parseInt(e.target.value)
+                    })
                   }
                 />
               </td>
