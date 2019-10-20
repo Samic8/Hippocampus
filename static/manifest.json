@@ -1,9 +1,9 @@
 {
   "name": "Hippocampus",
-  "version": "1.0",
-  "description": "Be deliberate about where you spend your time on the internet",
+  "version": "0.0.1",
+  "description": "Be deliberate about where you spend your time on the internet. Set goals for number of articles read on your favorite learning resource websites.",
   "manifest_version": 2,
-  "permissions": ["declarativeContent", "storage", "activeTab", "tabs"],
+  "permissions": ["declarativeContent", "storage"],
   "options_page": "options.html",
   "content_scripts": [
     {
