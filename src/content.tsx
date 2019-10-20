@@ -6,48 +6,55 @@ import Tooltip from "@material-ui/core/Tooltip";
 function Content() {
   const [count, setCount] = React.useState(0);
   const [ticked, setTicked] = React.useState(0);
+  const [websiteName, setWebsiteName] = React.useState(0);
 
   React.useEffect(() => {
     window.chrome.storage.sync.get("websites", function({ websites }) {
       websites.forEach(({ name, count }) => {
         if (location.href.includes(name)) {
           setCount(count);
+          setWebsiteName(name);
         }
       });
     });
+  }, []);
 
+  React.useEffect(() => {
     window.chrome.storage.sync.get(
       "ticked",
       ({ ticked: storedTicked = {} }) => {
         const stored = storedTicked[getToday()];
-        if (stored) {
-          setTicked(stored);
+        if (stored && stored[websiteName]) {
+          setTicked(stored[websiteName]);
         }
       }
     );
-  }, []);
+  }, [websiteName]);
 
-  // Update storage when ticked amount changes
-  React.useEffect(() => {
+  const onTick = checked => {
+    let newTicked = ticked;
+    if (checked) {
+      newTicked++;
+    } else {
+      newTicked--;
+    }
+
+    setTicked(newTicked);
+
+    // Update storage when ticked amount changes
     window.chrome.storage.sync.get(
       "ticked",
       ({ ticked: storedTicked = {} }) => {
         window.chrome.storage.sync.set({
           ticked: {
             ...storedTicked,
-            [getToday()]: ticked
+            [getToday()]: {
+              [websiteName]: newTicked
+            }
           }
         });
       }
     );
-  }, [ticked]);
-
-  const onTick = checked => {
-    if (checked) {
-      setTicked(ticked + 1);
-    } else {
-      setTicked(ticked - 1);
-    }
   };
 
   function getToday() {
