@@ -3,17 +3,13 @@
   "version": "0.0.1",
   "description": "Be deliberate about where you spend your time on the internet. Set goals for number of articles to read on your favorite blogs.",
   "manifest_version": 2,
-  "permissions": [
-    "declarativeContent",
-    "storage",
-    "tabs",
-    "http://*/",
-    "https://*/"
-  ],
+  "permissions": ["declarativeContent", "storage"],
   "options_page": "options.html",
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
   "icons": { "16": "icon16.png", "48": "icon48.png", "128": "icon128.png" }
 }
