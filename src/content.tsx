@@ -70,7 +70,10 @@ function Content() {
   }
 
   return (
-    <Tooltip title={`${ticked} articles read today!`} placement="left">
+    <Tooltip
+      title={`${ticked} ${websiteName} articles read today!`}
+      placement="left"
+    >
       <div
         style={{
           position: "fixed",
