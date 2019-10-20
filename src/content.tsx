@@ -8,6 +8,10 @@ function Content() {
   const [ticked, setTicked] = React.useState(0);
   const [websiteName, setWebsiteName] = React.useState(0);
 
+  if (!location.href.includes(name)) {
+    return null;
+  }
+
   React.useEffect(() => {
     window.chrome.storage.sync.get("websites", function({ websites }) {
       websites.forEach(({ name, count }) => {
