@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as ReacTableCellOM from "react-dom";
+import * as ReactDOM from "react-dom";
 import BrainSvg from "./brain.svg";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
@@ -10,14 +10,14 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
 
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+
 import "./options.css";
 
 function App() {
   const [websites, setWebsites] = React.useState([]);
-  const [newWebsite, setNewWebsite] = React.useState({
-    name: "",
-    count: 1
-  });
+  const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
 
   React.useEffect(() => {
     window.chrome.storage.sync.get("websites", function({
@@ -31,27 +31,36 @@ function App() {
     const updated = [...websites];
     updated[index] = { ...websites[index], ...newValues };
     setWebsites(updated);
+    setHasUnsavedChanges(true);
   };
 
   const onClickSave = () => {
-    window.chrome.storage.sync.set({ websites });
+    window.chrome.storage.sync.set({ websites }, () => {
+      setHasUnsavedChanges(false);
+    });
   };
 
-  const onAddNew = () => {
-    setWebsites([...websites, newWebsite]);
-    setNewWebsite({ name: "", count: 1 });
+  const deleteRow = index => {
+    const updated = [...websites];
+    updated.splice(index, 1);
+    setWebsites(updated);
+    setHasUnsavedChanges(true);
   };
 
   document.body.style.backgroundColor = "rgb(40, 44, 52)";
 
   return (
     <Paper className="mx-auto max-w-md mt-16">
-      <header className="flex items-center px-4 pt-4">
+      <header className="flex items-center p-4">
         <BrainSvg
           style={{ marginRight: "8px", width: "35px", height: "35px" }}
         />
         <h1 className="text-lg font-bold">Hippocampus</h1>
       </header>
+      <p className="px-4">
+        Be deliberate about where you spend your time on the internet. Set some
+        goals for articles to read each day.
+      </p>
       <Table>
         <TableHead>
           <TableRow>
@@ -61,13 +70,15 @@ function App() {
             <TableCell>
               <div className="font-bold text-md">Daily Article Goal</div>
             </TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {websites.map((website, index) => (
+          {[...websites, { name: "", count: 1 }].map((website, index) => (
             <TableRow key={index}>
               <TableCell>
                 <TextField
+                  placeholder="website name"
                   value={website.name}
                   onChange={e => updateWebsite(index, { name: e.target.value })}
                 />
@@ -80,43 +91,29 @@ function App() {
                   }
                 />
               </TableCell>
-              <TableCell></TableCell>
+              <TableCell>
+                {website.name && (
+                  <IconButton
+                    onClick={() => deleteRow(index)}
+                    aria-label="delete"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                )}
+              </TableCell>
             </TableRow>
           ))}
-          <TableRow>
-            <TableCell>
-              <TextField
-                value={newWebsite.name}
-                onChange={e =>
-                  setNewWebsite({ ...newWebsite, name: e.target.value })
-                }
-              />
-            </TableCell>
-            <TableCell>
-              <NumberInput
-                value={newWebsite.count}
-                onChange={e =>
-                  setNewWebsite({
-                    ...newWebsite,
-                    count: parseInt(e.target.value)
-                  })
-                }
-              />
-            </TableCell>
-            <TableCell>
-              <Button onClick={onAddNew}>Add New</Button>
-            </TableCell>
-          </TableRow>
         </TableBody>
       </Table>
       <div className="flex p-4">
         <Button
           className="ml-auto"
           variant="contained"
-          color="primary"
+          color={"primary"}
           onClick={onClickSave}
+          disabled={!hasUnsavedChanges}
         >
-          Save Config
+          Save
         </Button>
       </div>
     </Paper>
@@ -136,4 +133,4 @@ function NumberInput({ value, onChange }) {
 }
 
 var mountNode = document.getElementById("app");
-ReacTableCellOM.render(<App />, mountNode);
+ReactDOM.render(<App />, mountNode);
