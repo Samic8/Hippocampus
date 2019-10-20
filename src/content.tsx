@@ -1,5 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import BrainSvg from "./brain.svg";
+import Tooltip from "@material-ui/core/Tooltip";
 
 function Content() {
   const [count, setCount] = React.useState(0);
@@ -57,26 +59,37 @@ function Content() {
   }
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        right: "0px",
-        bottom: "0px",
-        padding: "16px"
-      }}
-    >
-      logo:
-      {Array.from({ length: count }).map((val, index) => (
-        <input
-          key={index}
-          type={"checkbox"}
-          checked={index < ticked}
-          onChange={e => {
-            onTick(e.target.checked);
-          }}
-        />
-      ))}
-    </div>
+    <Tooltip title={`${ticked} articles read today!`} placement="top">
+      <div
+        style={{
+          position: "fixed",
+          display: "flex",
+          alignItems: "center",
+          right: "0px",
+          bottom: "0px",
+          padding: "16px",
+          borderTopLeftRadius: "6px",
+          backgroundColor: "rgba(90, 90, 90, 0.1)"
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <BrainSvg
+            style={{ marginRight: "4px", width: "35px", height: "35px" }}
+          />
+        </div>
+        {Array.from({ length: count }).map((val, index) => (
+          <input
+            key={index}
+            type={"checkbox"}
+            checked={index < ticked}
+            style={{ marginLeft: "4px", fontSize: "16px" }}
+            onChange={e => {
+              onTick(e.target.checked);
+            }}
+          />
+        ))}
+      </div>
+    </Tooltip>
   );
 }
 

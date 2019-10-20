@@ -12,6 +12,7 @@
     "build-prod": "parcel build src/index.html"
   },
   "dependencies": {
+    "@material-ui/core": "^4.5.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "tailwindcss": "^1.1.2"
@@ -20,6 +21,7 @@
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.6.3",
+    "@svgr/parcel-plugin-svgr": "^4.3.3",
     "@types/chrome": "^0.0.91",
     "@types/react": "^16.9.9",
     "@types/react-dom": "^16.9.2",
