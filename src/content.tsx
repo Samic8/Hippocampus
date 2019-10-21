@@ -65,7 +65,7 @@ function Content() {
     return `${day}${monthIndex}${year}`;
   }
 
-  if (!location.href.includes(websiteName)) {
+  if (!websiteName || !location.href.includes(websiteName)) {
     return null;
   }
 
