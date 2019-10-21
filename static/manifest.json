@@ -1,6 +1,6 @@
 {
   "name": "Hippocampus",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Be deliberate about where you spend your time on the internet. Set goals for number of articles to read on your favorite blogs.",
   "manifest_version": 2,
   "permissions": ["declarativeContent", "storage"],
