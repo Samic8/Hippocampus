@@ -7,6 +7,7 @@ function Content() {
   const [count, setCount] = React.useState(0);
   const [ticked, setTicked] = React.useState(0);
   const [websiteName, setWebsiteName] = React.useState(0);
+  const [timePeriod, setTimePeriod] = React.useState("daily");
 
   React.useEffect(() => {
     window.chrome.storage.sync.get("websites", function({ websites }) {
@@ -21,11 +22,15 @@ function Content() {
 
   React.useEffect(() => {
     window.chrome.storage.sync.get(
-      "ticked",
-      ({ ticked: storedTicked = {} }) => {
-        const stored = storedTicked[getToday()];
-        if (stored && stored[websiteName]) {
-          setTicked(stored[websiteName]);
+      ["ticked", "timePeriod"],
+      ({ ticked: storedTicked = {}, timePeriod = "daily" }) => {
+        const stored = storedTicked[websiteName];
+        if (!stored) return;
+        const storedForPeriod =
+          stored[timePeriod === "daily" ? getToday() : getStartOfWeek()];
+        if (storedForPeriod) {
+          setTicked(storedForPeriod);
+          setTimePeriod(timePeriod);
         }
       }
     );
@@ -43,13 +48,16 @@ function Content() {
 
     // Update storage when ticked amount changes
     window.chrome.storage.sync.get(
-      "ticked",
-      ({ ticked: storedTicked = {} }) => {
+      ["ticked", "timePeriod"],
+      ({ ticked: storedTicked = {}, timePeriod = "daily" }) => {
         window.chrome.storage.sync.set({
           ticked: {
             ...storedTicked,
-            [getToday()]: {
-              [websiteName]: newTicked
+            [websiteName]: {
+              ...(timePeriod === "daily" ? { [getToday()]: newTicked } : {}),
+              ...(timePeriod === "weekly"
+                ? { [getStartOfWeek()]: newTicked }
+                : {})
             }
           }
         });
@@ -57,12 +65,19 @@ function Content() {
     );
   };
 
-  function getToday() {
-    var newDate = new Date();
+  function getToday(newDate = new Date()) {
     var day = newDate.getDate();
     var monthIndex = newDate.getMonth();
     var year = newDate.getFullYear();
     return `${day}${monthIndex}${year}`;
+  }
+
+  function getStartOfWeek() {
+    const d = new Date();
+    var day = d.getDay(),
+      diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+    const monday = new Date(d.setDate(diff));
+    return getToday(monday);
   }
 
   if (!websiteName || !location.href.includes(websiteName)) {
@@ -71,7 +86,9 @@ function Content() {
 
   return (
     <Tooltip
-      title={`${ticked} ${websiteName} articles read today!`}
+      title={`${ticked} ${websiteName} articles read ${
+        timePeriod === "daily" ? "today" : "this week"
+      }!`}
       placement="left"
     >
       <div
