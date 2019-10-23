@@ -102,6 +102,8 @@ function Content() {
           borderTopLeftRadius: "6px",
           backgroundColor: "rgb(40, 44, 52)",
           boxShadow: "0px 0px 7px #3e3d3d24",
+          borderTop: "1px solid grey",
+          borderLeft: "1px solid grey",
           zIndex: 10
         }}
       >
