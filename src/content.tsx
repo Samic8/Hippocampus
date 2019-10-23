@@ -100,7 +100,8 @@ function Content() {
           bottom: "0px",
           padding: "16px",
           borderTopLeftRadius: "6px",
-          backgroundColor: "rgba(90, 90, 90, 0.1)",
+          backgroundColor: "rgb(40, 44, 52)",
+          boxShadow: "0px 0px 7px #3e3d3d24",
           zIndex: 10
         }}
       >
