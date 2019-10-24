@@ -1,32 +1,20 @@
-# empty-project
-
-Empty project.
-
-## Building and running on localhost
+# Hippocampus
 
 First install dependencies:
 
 ```sh
-npm install
+yarn install
 ```
 
-To run in hot module reloading mode:
+To run in development mode:
 
 ```sh
-npm start
+yarn dev
 ```
 
 To create a production build:
 
 ```sh
-npm run build-prod
+yarn build-prod
 ```
-
-## Running
-
-Open the file `dist/index.html` in your browser
-
-## Credits
-
-Made with [createapp.dev](https://createapp.dev/)
 
