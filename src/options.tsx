@@ -102,14 +102,22 @@ function App() {
                 <TextField
                   placeholder="website name"
                   value={website.name}
-                  onChange={e => updateWebsite(index, { name: e.target.value })}
+                  onChange={e =>
+                    updateWebsite(index, {
+                      name: e.target.value,
+                      count: website.count
+                    })
+                  }
                 />
               </TableCell>
               <TableCell>
                 <NumberInput
                   value={website.count}
                   onChange={e =>
-                    updateWebsite(index, { count: e.target.value })
+                    updateWebsite(index, {
+                      count: e.target.value,
+                      name: website.name
+                    })
                   }
                 />
               </TableCell>

@@ -23,14 +23,14 @@ function Content() {
   React.useEffect(() => {
     window.chrome.storage.sync.get(
       ["ticked", "timePeriod"],
-      ({ ticked: storedTicked = {}, timePeriod = "daily" }) => {
+      ({ ticked: storedTicked = {}, timePeriod = "weekly" }) => {
         const stored = storedTicked[websiteName];
+        setTimePeriod(timePeriod);
         if (!stored) return;
         const storedForPeriod =
           stored[timePeriod === "daily" ? getToday() : getStartOfWeek()];
         if (storedForPeriod) {
           setTicked(storedForPeriod);
-          setTimePeriod(timePeriod);
         }
       }
     );
@@ -49,7 +49,7 @@ function Content() {
     // Update storage when ticked amount changes
     window.chrome.storage.sync.get(
       ["ticked", "timePeriod"],
-      ({ ticked: storedTicked = {}, timePeriod = "daily" }) => {
+      ({ ticked: storedTicked = {}, timePeriod = "weekly" }) => {
         window.chrome.storage.sync.set({
           ticked: {
             ...storedTicked,
@@ -100,7 +100,7 @@ function Content() {
           bottom: "0px",
           padding: "16px",
           borderTopLeftRadius: "6px",
-          backgroundColor: "rgb(40, 44, 52)",
+          backgroundColor: "rgba(40, 44, 52, 0.5)",
           boxShadow: "0px 0px 7px #3e3d3d24",
           borderTop: "1px solid grey",
           borderLeft: "1px solid grey",
