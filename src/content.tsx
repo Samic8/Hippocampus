@@ -10,7 +10,7 @@ function Content() {
   const [timePeriod, setTimePeriod] = React.useState("daily");
 
   React.useEffect(() => {
-    window.chrome.storage.sync.get("websites", function({ websites }) {
+    window.chrome.storage.sync.get("websites", function({ websites = [] }) {
       websites.forEach(({ name, count }) => {
         if (location.href.includes(name)) {
           setCount(count);
